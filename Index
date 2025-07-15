@@ -1,0 +1,674 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Illinois Future Fund</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            overflow: hidden;
+        }
+        
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            padding: 60px;
+            position: relative;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #ffffff;
+        }
+        
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .slide.title-slide {
+            background: linear-gradient(135deg, #1a365d 0%, #2d5a87 100%);
+            text-align: center;
+            align-items: center;
+        }
+        
+        .slide.impact-slide {
+            background: linear-gradient(135deg, #1e4d3b 0%, #2d6a4f 100%);
+        }
+        
+        .slide.solution-slide {
+            background: linear-gradient(135deg, #44337a 0%, #553c9a 100%);
+        }
+        
+        .slide.coalition-slide {
+            background: linear-gradient(135deg, #7c2d12 0%, #9a3412 100%);
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #ffd54f;
+        }
+        
+        p, li {
+            font-size: 1.4em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 1.8em;
+            color: #b3d9ff;
+            margin-bottom: 40px;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .content-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat-box {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .stat-number {
+            font-size: 3em;
+            font-weight: 700;
+            color: #ffd54f;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.2em;
+            color: #e0e0e0;
+        }
+        
+        .revenue-table {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        th {
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            color: #ffd54f;
+        }
+        
+        .highlight {
+            color: #ffd54f;
+            font-weight: 600;
+        }
+        
+        .three-pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .pillar {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .pillar:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .pillar-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .slide-number {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .timeline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            z-index: 0;
+        }
+        
+        .timeline-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px 30px;
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        
+        .coalition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .coalition-member {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .coalition-icon {
+            font-size: 2.5em;
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        ul li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        ul li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #ffd54f;
+            font-weight: bold;
+        }
+        
+        .key-message {
+            background: rgba(255, 217, 79, 0.2);
+            border-left: 4px solid #ffd54f;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 10px 10px 0;
+            font-size: 1.3em;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title -->
+    <div class="slide title-slide active">
+        <h1 class="fade-in">Illinois Future Fund</h1>
+        <p class="subtitle fade-in">Sustainable Community Investment Through Municipal Cannabis Revenue</p>
+        <div class="stat-box fade-in" style="margin-top: 60px;">
+            <p>Strategic Legislative Proposal for Illinois Municipalities</p>
+        </div>
+        <div class="slide-number">1 / 12</div>
+    </div>
+
+    <!-- Slide 2: The Problem -->
+    <div class="slide">
+        <h2>Municipal Funding Challenges</h2>
+        <div class="content-grid">
+            <div class="content-box fade-in">
+                <h3>Successful Programs Face Discontinuation</h3>
+                <ul>
+                    <li><strong>Chicago:</strong> 5,000 households receiving $500/month pilot program</li>
+                    <li><strong>Cook County:</strong> 3,250 households supported over 24 months</li>
+                    <li><strong>Evanston:</strong> 150 residents in groundbreaking guaranteed income pilot</li>
+                </ul>
+                <p class="highlight" style="margin-top: 20px;">Federal ARPA funding has been exhausted</p>
+            </div>
+            <div class="content-box fade-in">
+                <h3>Demonstrated Outcomes</h3>
+                <div class="stat-box">
+                    <span class="stat-number">75%</span>
+                    <span class="stat-label">Reported increased financial security</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">70%</span>
+                    <span class="stat-label">Experienced improved mental health</span>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">2 / 12</div>
+    </div>
+
+    <!-- Slide 3: The Solution -->
+    <div class="slide solution-slide">
+        <h2>Strategic Revenue Solution</h2>
+        <div class="key-message fade-in">
+            Amend existing legislation to authorize municipalities to increase local cannabis tax from 3% to 6%
+        </div>
+        <div class="three-pillars">
+            <div class="pillar fade-in">
+                <div class="pillar-icon">💰</div>
+                <h3>Local Authority</h3>
+                <p>Municipal discretion in implementation</p>
+            </div>
+            <div class="pillar fade-in">
+                <div class="pillar-icon">🏛️</div>
+                <h3>Existing Framework</h3>
+                <p>Utilizes current tax collection infrastructure</p>
+            </div>
+            <div class="pillar fade-in">
+                <div class="pillar-icon">⚖️</div>
+                <h3>Proven System</h3>
+                <p>Leverages established IDOR mechanisms</p>
+            </div>
+        </div>
+        <div class="slide-number">3 / 12</div>
+    </div>
+
+    <!-- Slide 4: The Three Pillars -->
+    <div class="slide">
+        <h2>Targeted Revenue Allocation Framework</h2>
+        <p style="text-align: center; margin-bottom: 40px;">Revenue above 3% must be allocated across three priority areas:</p>
+        <div class="three-pillars">
+            <div class="pillar fade-in">
+                <div class="pillar-icon">🏠</div>
+                <h3>Economic Security Fund</h3>
+                <p>Direct assistance programs for economically vulnerable residents</p>
+            </div>
+            <div class="pillar fade-in">
+                <div class="pillar-icon">👮</div>
+                <h3>Public Safety Enhancement</h3>
+                <p>Professional development, equipment, and community policing initiatives</p>
+            </div>
+            <div class="pillar fade-in">
+                <div class="pillar-icon">🤝</div>
+                <h3>Community Reinvestment</h3>
+                <p>Investment in areas disproportionately impacted by cannabis prohibition</p>
+            </div>
+        </div>
+        <div class="key-message fade-in" style="margin-top: 40px;">
+            Municipalities retain flexibility in determining specific allocation percentages within these categories
+        </div>
+        <div class="slide-number">4 / 12</div>
+    </div>
+
+    <!-- Slide 5: Revenue Projections -->
+    <div class="slide impact-slide">
+        <h2>Revenue Impact Analysis</h2>
+        <div class="revenue-table fade-in">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Annual Cannabis Sales</th>
+                        <th>Current Revenue (3%)</th>
+                        <th>Enhanced Revenue (6%)</th>
+                        <th>Additional Annual Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>$25 million</td>
+                        <td>$750,000</td>
+                        <td>$1.5 million</td>
+                        <td class="highlight">$750,000</td>
+                    </tr>
+                    <tr>
+                        <td>$50 million</td>
+                        <td>$1.5 million</td>
+                        <td>$3 million</td>
+                        <td class="highlight">$1.5 million</td>
+                    </tr>
+                    <tr>
+                        <td>$100 million</td>
+                        <td>$3 million</td>
+                        <td>$6 million</td>
+                        <td class="highlight">$3 million</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="text-align: center; font-size: 1.3em; margin-top: 40px;">
+            For municipalities with significant cannabis retail presence:<br>
+            <span class="highlight">Substantial new revenue for priority community investments</span>
+        </p>
+        <div class="slide-number">5 / 12</div>
+    </div>
+
+    <!-- Slide 6: Building a Winning Coalition -->
+    <div class="slide coalition-slide">
+        <h2>Multi-Stakeholder Value Proposition</h2>
+        <div class="coalition-grid">
+            <div class="coalition-member fade-in">
+                <div class="coalition-icon">🏛️</div>
+                <div>
+                    <h3>Municipal Leadership</h3>
+                    <p>Enhanced revenue authority with local control</p>
+                </div>
+            </div>
+            <div class="coalition-member fade-in">
+                <div class="coalition-icon">👮</div>
+                <div>
+                    <h3>Law Enforcement</h3>
+                    <p>Dedicated funding for professional development</p>
+                </div>
+            </div>
+            <div class="coalition-member fade-in">
+                <div class="coalition-icon">⚖️</div>
+                <div>
+                    <h3>Equity Advocates</h3>
+                    <p>Sustained community reinvestment mechanisms</p>
+                </div>
+            </div>
+            <div class="coalition-member fade-in">
+                <div class="coalition-icon">💼</div>
+                <div>
+                    <h3>Cannabis Industry</h3>
+                    <p>Operational flexibility and regulatory clarity</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">6 / 12</div>
+    </div>
+
+    <!-- Slide 7: Addressing Concerns -->
+    <div class="slide">
+        <h2>Risk Mitigation & Accountability Measures</h2>
+        <div class="content-grid">
+            <div class="content-box fade-in">
+                <h3>Market Impact Assessment</h3>
+                <ul>
+                    <li>Modest 3% tax increase minimizes market disruption</li>
+                    <li>Local option preserves competitive positioning</li>
+                    <li>Washington State precedent: 46% total tax with 77% legal market share</li>
+                </ul>
+            </div>
+            <div class="content-box fade-in">
+                <h3>Performance Monitoring</h3>
+                <ul>
+                    <li>Mandatory 3-year comprehensive impact evaluation</li>
+                    <li>Data-driven policy review and adjustment process</li>
+                    <li>Built-in mechanisms for policy refinement</li>
+                </ul>
+            </div>
+        </div>
+        <div class="key-message fade-in" style="margin-top: 40px;">
+            Industry incentive: Legislation includes permanent authorization for curbside pickup and drive-through operations
+        </div>
+        <div class="slide-number">7 / 12</div>
+    </div>
+
+    <!-- Slide 8: The Political Strategy -->
+    <div class="slide">
+        <h2>Legislative Implementation Strategy</h2>
+        <div class="timeline">
+            <div class="timeline-item fade-in">
+                <h3>Summer 2025</h3>
+                <p>Coalition building & legislative drafting</p>
+            </div>
+            <div class="timeline-item fade-in">
+                <h3>Fall 2025</h3>
+                <p>Veto session introduction & passage</p>
+            </div>
+            <div class="timeline-item fade-in">
+                <h3>2026</h3>
+                <p>Municipal implementation & revenue generation</p>
+            </div>
+        </div>
+        <div class="content-box fade-in" style="margin-top: 40px;">
+            <h3>Strategic Legislative Champions:</h3>
+            <ul>
+                <li>Suburban sponsor from guaranteed income pilot municipality</li>
+                <li>Black and Latino Caucus leadership engagement</li>
+                <li>Illinois Municipal League partnership</li>
+                <li>Bipartisan law enforcement supporter</li>
+            </ul>
+        </div>
+        <div class="slide-number">8 / 12</div>
+    </div>
+
+    <!-- Slide 9: Why Now? -->
+    <div class="slide">
+        <h2>Strategic Timing Assessment</h2>
+        <div class="content-grid">
+            <div class="content-box fade-in">
+                <h3>Market Conditions</h3>
+                <ul>
+                    <li>Federal ARPA funding cycles concluded</li>
+                    <li>Comprehensive pilot program data available</li>
+                    <li>Cannabis market maturation and stability</li>
+                    <li>No impact on state budget or revenue streams</li>
+                </ul>
+            </div>
+            <div class="content-box fade-in">
+                <h3>Political Environment</h3>
+                <ul>
+                    <li>Democratic legislative supermajority</li>
+                    <li>Local control principle has broad appeal</li>
+                    <li>Cannabis equity commitments require fulfillment</li>
+                    <li>Potential for bipartisan municipal support</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide-number">9 / 12</div>
+    </div>
+
+    <!-- Slide 10: Key Messages -->
+    <div class="slide">
+        <h2>Strategic Messaging Framework</h2>
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div class="key-message fade-in">
+                <h3>🏛️ Municipal Leadership:</h3>
+                <p>"Empowers local decision-making for community-specific solutions"</p>
+            </div>
+            <div class="key-message fade-in">
+                <h3>💰 Fiscal Responsibility:</h3>
+                <p>"Sustains proven programs without state expenditure"</p>
+            </div>
+            <div class="key-message fade-in">
+                <h3>⚖️ Equity & Justice:</h3>
+                <p>"Fulfills cannabis legalization equity commitments"</p>
+            </div>
+            <div class="key-message fade-in">
+                <h3>👮 Public Safety:</h3>
+                <p>"Provides dedicated resources for law enforcement enhancement"</p>
+            </div>
+        </div>
+        <div class="slide-number">10 / 12</div>
+    </div>
+
+    <!-- Slide 11: Implementation -->
+    <div class="slide">
+        <h2>Operational Implementation</h2>
+        <div class="content-box fade-in" style="max-width: 800px; margin: 0 auto;">
+            <h3>Legislative Modification</h3>
+            <p>Single parameter adjustment: maximum municipal tax rate from 3% to 6%</p>
+            
+            <h3 style="margin-top: 40px;">Existing Infrastructure Utilization</h3>
+            <ul>
+                <li>Illinois Department of Revenue continues collection and distribution</li>
+                <li>Current reporting and compliance mechanisms remain unchanged</li>
+                <li>Established 0.25% increment structure maintained</li>
+            </ul>
+            
+            <h3 style="margin-top: 40px;">New Requirements</h3>
+            <ul>
+                <li>Tri-partite fund allocation for revenue above 3%</li>
+                <li>Municipal fund establishment and management protocols</li>
+                <li>Comprehensive 3-year impact assessment mandate</li>
+            </ul>
+        </div>
+        <div class="slide-number">11 / 12</div>
+    </div>
+
+    <!-- Slide 12: Call to Action -->
+    <div class="slide title-slide">
+        <h2>Partnership Opportunity</h2>
+        <div class="content-box fade-in" style="max-width: 800px; margin: 40px auto;">
+            <p style="font-size: 1.5em; text-align: center; line-height: 1.8;">
+                Illinois established national leadership in equitable cannabis policy.<br><br>
+                The Illinois Future Fund represents the next evolution: leveraging cannabis revenue for sustainable community investment and economic security.<br><br>
+                <span class="highlight">Strategic implementation with transformative community impact.</span>
+            </p>
+        </div>
+        <div class="stat-box fade-in" style="margin-top: 40px;">
+            <p style="font-size: 1.4em;">Illinois Future Fund Initiative</p>
+            <p style="margin-top: 20px;">Strategic Implementation Timeline: Summer 2025</p>
+        </div>
+        <div class="slide-number">12 / 12</div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="controls">
+        <button onclick="previousSlide()">← Previous</button>
+        <button onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            // Trigger animations
+            const elements = slides[currentSlide].querySelectorAll('.fade-in');
+            elements.forEach((el, index) => {
+                el.style.animation = 'none';
+                setTimeout(() => {
+                    el.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s both`;
+                }, 10);
+            });
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) nextSlide();
+            if (touchEndX > touchStartX + 50) previousSlide();
+        }
+    </script>
+</body>
+</html>
