@@ -310,49 +310,58 @@
         
         .controls {
             position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 1rem;
+            top: 20px;
+            right: 20px;
             z-index: 1000;
+            display: flex;
             align-items: center;
+            gap: 12px;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 8px;
+            border-radius: 50px;
+            backdrop-filter: blur(12px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .controls.hidden {
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
         }
         
         .nav-button {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
+            background: transparent;
+            border: none;
             color: var(--text-primary);
-            padding: 1rem 2rem;
-            border-radius: 50px;
+            padding: 8px;
+            border-radius: 50%;
             font-size: 1rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
         }
         
         .nav-button:hover {
             background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
         }
         
         .nav-button:active {
-            transform: translateY(0);
+            transform: scale(0.95);
         }
         
         .progress-bar {
-            width: 200px;
+            width: 120px;
             height: 4px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 2px;
             overflow: hidden;
-            position: relative;
         }
         
         .progress-fill {
@@ -364,18 +373,12 @@
         }
         
         .slide-indicator {
-            position: fixed;
-            top: 40px;
-            right: 40px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            padding: 1rem 1.5rem;
-            border-radius: 50px;
             font-size: 0.875rem;
             font-weight: 500;
-            z-index: 100;
+            color: var(--text-secondary);
+            padding: 0 8px;
+            min-width: 50px;
+            text-align: center;
         }
         
         .timeline {
@@ -730,10 +733,6 @@ table {
         <div class="loader"></div>
     </div>
 
-    <!-- Slide Indicator -->
-    <div class="slide-indicator">
-        <span id="currentSlideNum">1</span> / <span id="totalSlides">12</span>
-    </div>
 
     <!-- Keyboard Hint -->
     <div class="keyboard-hint">
@@ -1046,21 +1045,22 @@ table {
 
     <!-- Navigation Controls -->
     <div class="controls">
-        <button class="nav-button" onclick="previousSlide()">
+        <button class="nav-button" onclick="previousSlide()" aria-label="Previous Slide">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
-            Previous
         </button>
         <div class="progress-bar">
             <div class="progress-fill" id="progressFill" style="width: 8.33%;"></div>
         </div>
-        <button class="nav-button" onclick="nextSlide()">
-            Next
+        <button class="nav-button" onclick="nextSlide()" aria-label="Next Slide">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
         </button>
+        <div class="slide-indicator">
+            <span id="currentSlideNum">1</span>/<span id="totalSlides">12</span>
+        </div>
     </div>
 
     <script>
@@ -1150,8 +1150,25 @@ table {
             if (touchEndX > touchStartX + 50) previousSlide();
         }
 
-        // Initialize first slide
+        // Auto-hide controls
+        let hideTimeout;
+        const controls = document.querySelector('.controls');
+
+        function showControls() {
+            controls.classList.remove('hidden');
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => {
+                controls.classList.add('hidden');
+            }, 3000); // Hide after 3 seconds
+        }
+
+        document.addEventListener('mousemove', showControls);
+        document.addEventListener('touchstart', showControls);
+        document.addEventListener('keydown', showControls);
+
+        // Initialize first slide and controls
         showSlide(0);
+        showControls();
     </script>
 </body>
 </html>
