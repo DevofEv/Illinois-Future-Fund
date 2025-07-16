@@ -612,6 +612,116 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+/* Add these CSS fixes to prevent content cutoff */
+
+/* 1. Allow slides to scroll when content overflows */
+.slide {
+    min-height: 100vh;
+    height: auto;
+    overflow-y: auto;
+    padding-bottom: 140px; /* Increased to ensure controls don't overlap */
+}
+
+/* 2. Ensure controls stay at bottom without covering content */
+.controls {
+    position: fixed;
+    bottom: 40px;
+    background: rgba(15, 23, 42, 0.9);
+    padding: 20px;
+    border-radius: 60px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* 3. Add scrollbar styling for better UX */
+.slide::-webkit-scrollbar {
+    width: 8px;
+}
+
+.slide::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.slide::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+/* 4. Ensure keyboard hint doesn't interfere */
+.keyboard-hint {
+    bottom: 120px; /* Move above controls */
+}
+
+/* 5. Better content box handling */
+.content-box {
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+/* 6. Mobile-specific fixes */
+@media (max-width: 768px) {
+    .slide {
+        padding: 30px 15px 160px; /* More bottom padding for mobile */
+    }
+
+    .stat-box {
+        margin: 1rem 0;
+        padding: 1.5rem;
+    }
+
+    .stat-number {
+        font-size: 3rem;
+    }
+
+    /* Stack navigation buttons vertically on mobile */
+    .controls {
+        flex-direction: column;
+        bottom: 20px;
+        width: calc(100% - 40px);
+        left: 20px;
+        right: 20px;
+        transform: none;
+    }
+
+    .progress-bar {
+        width: 100%;
+        order: -1;
+        margin-bottom: 1rem;
+    }
+}
+
+/* 7. Ensure tables are responsive */
+.revenue-table {
+    overflow-x: auto;
+}
+
+table {
+    min-width: 600px;
+}
+
+/* 8. Fix heading sizes for better fit */
+@media (max-width: 1024px) {
+    h1 { font-size: 3.5rem; }
+    h2 { font-size: 2.5rem; }
+}
+
+/* 9. Add visual indicator for scrollable content */
+.slide.has-scroll::after {
+    content: '↓ Scroll for more ↓';
+    position: fixed;
+    bottom: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.875rem;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+}
     </style>
 </head>
 <body>
