@@ -2,8 +2,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Illinois Future Fund</title>
+    <title>Illinois Future Fund - Enhanced Presentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-dark: #0f172a;
+            --primary-blue: #1e3a8a;
+            --primary-green: #14532d;
+            --primary-purple: #581c87;
+            --primary-orange: #7c2d12;
+            --accent-gold: #fbbf24;
+            --accent-blue: #60a5fa;
+            --text-primary: #ffffff;
+            --text-secondary: #cbd5e1;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -11,20 +29,36 @@
         }
         
         body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-            background: #f8f9fa;
-            color: #2c3e50;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: var(--text-primary);
             overflow: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
         }
         
         .slide {
             width: 100vw;
             height: 100vh;
             display: none;
-            padding: 60px;
+            padding: 80px;
             position: relative;
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: #ffffff;
+            z-index: 2;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #1e293b 100%);
         }
         
         .slide.active {
@@ -34,98 +68,160 @@
         }
         
         .slide.title-slide {
-            background: linear-gradient(135deg, #1a365d 0%, #2d5a87 100%);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #2563eb 100%);
             text-align: center;
             align-items: center;
         }
         
         .slide.impact-slide {
-            background: linear-gradient(135deg, #1e4d3b 0%, #2d6a4f 100%);
+            background: linear-gradient(135deg, var(--primary-green) 0%, #166534 100%);
         }
         
         .slide.solution-slide {
-            background: linear-gradient(135deg, #44337a 0%, #553c9a 100%);
+            background: linear-gradient(135deg, var(--primary-purple) 0%, #7c3aed 100%);
         }
         
         .slide.coalition-slide {
-            background: linear-gradient(135deg, #7c2d12 0%, #9a3412 100%);
+            background: linear-gradient(135deg, var(--primary-orange) 0%, #dc2626 100%);
         }
         
         h1 {
-            font-size: 3.5em;
-            margin-bottom: 30px;
-            font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-family: 'DM Serif Display', serif;
+            font-size: 4.5rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            background: linear-gradient(to right, #ffffff 0%, #e2e8f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         h2 {
-            font-size: 2.5em;
-            margin-bottom: 40px;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-family: 'Inter', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
         }
         
         h3 {
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            color: #ffd54f;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-gold);
+            letter-spacing: -0.01em;
         }
         
         p, li {
-            font-size: 1.4em;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            font-size: 1.125rem;
+            line-height: 1.75;
+            margin-bottom: 1.25rem;
+            font-weight: 400;
+            color: var(--text-secondary);
         }
         
         .subtitle {
-            font-size: 1.8em;
-            color: #b3d9ff;
-            margin-bottom: 40px;
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            letter-spacing: 0.01em;
         }
         
         .content-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 40px;
-            margin-top: 40px;
+            gap: 2rem;
+            margin-top: 2rem;
         }
         
         .content-box {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .content-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 35px -5px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.2);
         }
         
         .stat-box {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 30px;
-            border-radius: 15px;
+            background: linear-gradient(135deg, var(--glass-bg) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: 24px;
             text-align: center;
-            margin: 20px 0;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-box:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-gold);
         }
         
         .stat-number {
-            font-size: 3em;
-            font-weight: 700;
-            color: #ffd54f;
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--accent-gold);
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
         
         .stat-label {
-            font-size: 1.2em;
-            color: #e0e0e0;
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            font-weight: 400;
         }
         
         .revenue-table {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 15px;
-            margin: 30px 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            overflow: hidden;
         }
         
         table {
@@ -134,86 +230,159 @@
         }
         
         th, td {
-            padding: 15px;
+            padding: 1.25rem;
             text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         
         th {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             font-weight: 600;
-            color: #ffd54f;
+            color: var(--accent-gold);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
         }
         
         .highlight {
-            color: #ffd54f;
+            color: var(--accent-gold);
             font-weight: 600;
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
         }
         
         .three-pillars {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 40px;
+            gap: 2rem;
+            margin-top: 3rem;
         }
         
         .pillar {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 15px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: 24px;
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pillar::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .pillar:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent-gold);
+        }
+        
+        .pillar:hover::after {
+            opacity: 1;
         }
         
         .pillar-icon {
-            font-size: 3em;
-            margin-bottom: 20px;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #f59e0b 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 10px 20px -5px rgba(251, 191, 36, 0.3);
         }
         
         .controls {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            gap: 15px;
+            gap: 1rem;
             z-index: 1000;
+            align-items: center;
         }
         
-        button {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 1.1em;
+        .nav-button {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
-        button:hover {
-            background: rgba(255, 255, 255, 0.3);
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
         }
         
-        .slide-number {
-            position: absolute;
-            bottom: 30px;
-            left: 30px;
-            font-size: 1.2em;
-            color: rgba(255, 255, 255, 0.6);
+        .nav-button:active {
+            transform: translateY(0);
+        }
+        
+        .progress-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-gold) 0%, #f59e0b 100%);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+        }
+        
+        .slide-indicator {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            z-index: 100;
         }
         
         .timeline {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin: 40px 0;
+            margin: 3rem 0;
             position: relative;
         }
         
@@ -224,37 +393,63 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: rgba(255, 255, 255, 0.3);
+            background: linear-gradient(90deg, var(--accent-gold) 0%, transparent 50%, var(--accent-gold) 100%);
             z-index: 0;
         }
         
         .timeline-item {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px 30px;
-            border-radius: 10px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
             position: relative;
             z-index: 1;
             text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-gold);
         }
         
         .coalition-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin-top: 40px;
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
         
         .coalition-member {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 25px;
-            border-radius: 10px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 1.5rem;
+            border-radius: 16px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .coalition-member:hover {
+            transform: translateX(10px);
+            border-color: var(--accent-gold);
         }
         
         .coalition-icon {
-            font-size: 2.5em;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            flex-shrink: 0;
         }
         
         ul {
@@ -264,60 +459,198 @@
         
         ul li {
             position: relative;
-            padding-left: 30px;
-            margin-bottom: 15px;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        ul li:hover {
+            transform: translateX(5px);
+            color: var(--text-primary);
         }
         
         ul li:before {
             content: "→";
             position: absolute;
             left: 0;
-            color: #ffd54f;
+            color: var(--accent-gold);
             font-weight: bold;
+            font-size: 1.25rem;
         }
         
         .key-message {
-            background: rgba(255, 217, 79, 0.2);
-            border-left: 4px solid #ffd54f;
-            padding: 20px;
-            margin: 30px 0;
-            border-radius: 0 10px 10px 0;
-            font-size: 1.3em;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+            border-left: 4px solid var(--accent-gold);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 16px 16px 0;
+            font-size: 1.125rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .key-message:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 20px -5px rgba(251, 191, 36, 0.2);
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
         
         .fade-in {
-            animation: fadeIn 0.6s ease-out;
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        .fade-in-scale {
+            animation: fadeInScale 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        .keyboard-hint {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+        
+        .keyboard-hint:hover {
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 20px;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .content-grid,
+            .three-pillars,
+            .coalition-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                bottom: 20px;
+            }
+            
+            .slide-indicator {
+                top: 20px;
+                right: 20px;
+            }
+            
+            .keyboard-hint {
+                display: none;
+            }
+        }
+        
+        /* Loading animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--glass-border);
+            border-top-color: var(--accent-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Slide Indicator -->
+    <div class="slide-indicator">
+        <span id="currentSlideNum">1</span> / <span id="totalSlides">12</span>
+    </div>
+
+    <!-- Keyboard Hint -->
+    <div class="keyboard-hint">
+        Use ← → arrow keys to navigate
+    </div>
+
     <!-- Slide 1: Title -->
     <div class="slide title-slide active">
-        <h1 class="fade-in">Illinois Future Fund</h1>
+        <h1 class="fade-in-scale">Illinois Future Fund</h1>
         <p class="subtitle fade-in">Sustainable Community Investment Through Municipal Cannabis Revenue</p>
-        <div class="stat-box fade-in" style="margin-top: 60px;">
-            <p>Strategic Legislative Proposal for Illinois Municipalities</p>
+        <div class="stat-box fade-in-scale" style="margin-top: 4rem; max-width: 600px;">
+            <p style="font-size: 1.25rem; color: var(--text-primary); margin: 0;">Strategic Legislative Proposal for Illinois Municipalities</p>
         </div>
-        <div class="slide-number">1 / 12</div>
     </div>
 
     <!-- Slide 2: The Problem -->
     <div class="slide">
-        <h2>Municipal Funding Challenges</h2>
+        <h2 class="fade-in">Municipal Funding Challenges</h2>
         <div class="content-grid">
             <div class="content-box fade-in">
                 <h3>Successful Programs Face Discontinuation</h3>
                 <ul>
-                    <li><strong>Chicago:</strong> 5,000 households receiving $500/month pilot program</li>
-                    <li><strong>Cook County:</strong> 3,250 households supported over 24 months</li>
-                    <li><strong>Evanston:</strong> 150 residents in groundbreaking guaranteed income pilot</li>
+                    <li><strong style="color: var(--text-primary);">Chicago:</strong> 5,000 households receiving $500/month pilot program</li>
+                    <li><strong style="color: var(--text-primary);">Cook County:</strong> 3,250 households supported over 24 months</li>
+                    <li><strong style="color: var(--text-primary);">Evanston:</strong> 150 residents in groundbreaking guaranteed income pilot</li>
                 </ul>
-                <p class="highlight" style="margin-top: 20px;">Federal ARPA funding has been exhausted</p>
+                <p class="highlight" style="margin-top: 1.5rem;">Federal ARPA funding has been exhausted</p>
             </div>
             <div class="content-box fade-in">
                 <h3>Demonstrated Outcomes</h3>
@@ -331,13 +664,12 @@
                 </div>
             </div>
         </div>
-        <div class="slide-number">2 / 12</div>
     </div>
 
     <!-- Slide 3: The Solution -->
     <div class="slide solution-slide">
-        <h2>Strategic Revenue Solution</h2>
-        <div class="key-message fade-in">
+        <h2 class="fade-in">Strategic Revenue Solution</h2>
+        <div class="key-message fade-in-scale">
             Amend existing legislation to authorize municipalities to increase local cannabis tax from 3% to 6%
         </div>
         <div class="three-pillars">
@@ -357,13 +689,12 @@
                 <p>Leverages established IDOR mechanisms</p>
             </div>
         </div>
-        <div class="slide-number">3 / 12</div>
     </div>
 
     <!-- Slide 4: The Three Pillars -->
     <div class="slide">
-        <h2>Targeted Revenue Allocation Framework</h2>
-        <p style="text-align: center; margin-bottom: 40px;">Revenue above 3% must be allocated across three priority areas:</p>
+        <h2 class="fade-in">Targeted Revenue Allocation Framework</h2>
+        <p style="text-align: center; margin-bottom: 3rem; font-size: 1.25rem; color: var(--text-primary);">Revenue above 3% must be allocated across three priority areas:</p>
         <div class="three-pillars">
             <div class="pillar fade-in">
                 <div class="pillar-icon">🏠</div>
@@ -381,16 +712,15 @@
                 <p>Investment in areas disproportionately impacted by cannabis prohibition</p>
             </div>
         </div>
-        <div class="key-message fade-in" style="margin-top: 40px;">
+        <div class="key-message fade-in" style="margin-top: 3rem;">
             Municipalities retain flexibility in determining specific allocation percentages within these categories
         </div>
-        <div class="slide-number">4 / 12</div>
     </div>
 
     <!-- Slide 5: Revenue Projections -->
     <div class="slide impact-slide">
-        <h2>Revenue Impact Analysis</h2>
-        <div class="revenue-table fade-in">
+        <h2 class="fade-in">Revenue Impact Analysis</h2>
+        <div class="revenue-table fade-in-scale">
             <table>
                 <thead>
                     <tr>
@@ -422,16 +752,15 @@
                 </tbody>
             </table>
         </div>
-        <p style="text-align: center; font-size: 1.3em; margin-top: 40px;">
+        <p style="text-align: center; font-size: 1.25rem; margin-top: 3rem; color: var(--text-primary);">
             For municipalities with significant cannabis retail presence:<br>
             <span class="highlight">Substantial new revenue for priority community investments</span>
         </p>
-        <div class="slide-number">5 / 12</div>
     </div>
 
     <!-- Slide 6: Building a Winning Coalition -->
     <div class="slide coalition-slide">
-        <h2>Multi-Stakeholder Value Proposition</h2>
+        <h2 class="fade-in">Multi-Stakeholder Value Proposition</h2>
         <div class="coalition-grid">
             <div class="coalition-member fade-in">
                 <div class="coalition-icon">🏛️</div>
@@ -462,12 +791,11 @@
                 </div>
             </div>
         </div>
-        <div class="slide-number">6 / 12</div>
     </div>
 
     <!-- Slide 7: Addressing Concerns -->
     <div class="slide">
-        <h2>Risk Mitigation & Accountability Measures</h2>
+        <h2 class="fade-in">Risk Mitigation & Accountability Measures</h2>
         <div class="content-grid">
             <div class="content-box fade-in">
                 <h3>Market Impact Assessment</h3>
@@ -486,30 +814,29 @@
                 </ul>
             </div>
         </div>
-        <div class="key-message fade-in" style="margin-top: 40px;">
+        <div class="key-message fade-in" style="margin-top: 3rem;">
             Industry incentive: Legislation includes permanent authorization for curbside pickup and drive-through operations
         </div>
-        <div class="slide-number">7 / 12</div>
     </div>
 
     <!-- Slide 8: The Political Strategy -->
     <div class="slide">
-        <h2>Legislative Implementation Strategy</h2>
+        <h2 class="fade-in">Legislative Implementation Strategy</h2>
         <div class="timeline">
             <div class="timeline-item fade-in">
                 <h3>Summer 2025</h3>
-                <p>Coalition building & legislative drafting</p>
+                <p style="margin: 0; color: var(--text-secondary);">Coalition building & legislative drafting</p>
             </div>
             <div class="timeline-item fade-in">
                 <h3>Fall 2025</h3>
-                <p>Veto session introduction & passage</p>
+                <p style="margin: 0; color: var(--text-secondary);">Veto session introduction & passage</p>
             </div>
             <div class="timeline-item fade-in">
                 <h3>2026</h3>
-                <p>Municipal implementation & revenue generation</p>
+                <p style="margin: 0; color: var(--text-secondary);">Municipal implementation & revenue generation</p>
             </div>
         </div>
-        <div class="content-box fade-in" style="margin-top: 40px;">
+        <div class="content-box fade-in" style="margin-top: 3rem;">
             <h3>Strategic Legislative Champions:</h3>
             <ul>
                 <li>Suburban sponsor from guaranteed income pilot municipality</li>
@@ -518,12 +845,11 @@
                 <li>Bipartisan law enforcement supporter</li>
             </ul>
         </div>
-        <div class="slide-number">8 / 12</div>
     </div>
 
     <!-- Slide 9: Why Now? -->
     <div class="slide">
-        <h2>Strategic Timing Assessment</h2>
+        <h2 class="fade-in">Strategic Timing Assessment</h2>
         <div class="content-grid">
             <div class="content-box fade-in">
                 <h3>Market Conditions</h3>
@@ -544,98 +870,140 @@
                 </ul>
             </div>
         </div>
-        <div class="slide-number">9 / 12</div>
     </div>
 
     <!-- Slide 10: Key Messages -->
     <div class="slide">
-        <h2>Strategic Messaging Framework</h2>
-        <div style="max-width: 900px; margin: 0 auto;">
+        <h2 class="fade-in">Strategic Messaging Framework</h2>
+        <div style="max-width: 1000px; margin: 0 auto;">
             <div class="key-message fade-in">
                 <h3>🏛️ Municipal Leadership:</h3>
-                <p>"Empowers local decision-making for community-specific solutions"</p>
+                <p style="margin: 0;">"Empowers local decision-making for community-specific solutions"</p>
             </div>
             <div class="key-message fade-in">
                 <h3>💰 Fiscal Responsibility:</h3>
-                <p>"Sustains proven programs without state expenditure"</p>
+                <p style="margin: 0;">"Sustains proven programs without state expenditure"</p>
             </div>
             <div class="key-message fade-in">
                 <h3>⚖️ Equity & Justice:</h3>
-                <p>"Fulfills cannabis legalization equity commitments"</p>
+                <p style="margin: 0;">"Fulfills cannabis legalization equity commitments"</p>
             </div>
             <div class="key-message fade-in">
                 <h3>👮 Public Safety:</h3>
-                <p>"Provides dedicated resources for law enforcement enhancement"</p>
+                <p style="margin: 0;">"Provides dedicated resources for law enforcement enhancement"</p>
             </div>
         </div>
-        <div class="slide-number">10 / 12</div>
     </div>
 
     <!-- Slide 11: Implementation -->
     <div class="slide">
-        <h2>Operational Implementation</h2>
-        <div class="content-box fade-in" style="max-width: 800px; margin: 0 auto;">
+        <h2 class="fade-in">Operational Implementation</h2>
+        <div class="content-box fade-in-scale" style="max-width: 900px; margin: 0 auto;">
             <h3>Legislative Modification</h3>
             <p>Single parameter adjustment: maximum municipal tax rate from 3% to 6%</p>
             
-            <h3 style="margin-top: 40px;">Existing Infrastructure Utilization</h3>
+            <h3 style="margin-top: 2.5rem;">Existing Infrastructure Utilization</h3>
             <ul>
                 <li>Illinois Department of Revenue continues collection and distribution</li>
                 <li>Current reporting and compliance mechanisms remain unchanged</li>
                 <li>Established 0.25% increment structure maintained</li>
             </ul>
             
-            <h3 style="margin-top: 40px;">New Requirements</h3>
+            <h3 style="margin-top: 2.5rem;">New Requirements</h3>
             <ul>
                 <li>Tri-partite fund allocation for revenue above 3%</li>
                 <li>Municipal fund establishment and management protocols</li>
                 <li>Comprehensive 3-year impact assessment mandate</li>
             </ul>
         </div>
-        <div class="slide-number">11 / 12</div>
     </div>
 
     <!-- Slide 12: Call to Action -->
     <div class="slide title-slide">
-        <h2>Partnership Opportunity</h2>
-        <div class="content-box fade-in" style="max-width: 800px; margin: 40px auto;">
-            <p style="font-size: 1.5em; text-align: center; line-height: 1.8;">
+        <h2 class="fade-in-scale">Partnership Opportunity</h2>
+        <div class="content-box fade-in" style="max-width: 900px; margin: 3rem auto;">
+            <p style="font-size: 1.375rem; text-align: center; line-height: 1.8; color: var(--text-primary);">
                 Illinois established national leadership in equitable cannabis policy.<br><br>
                 The Illinois Future Fund represents the next evolution: leveraging cannabis revenue for sustainable community investment and economic security.<br><br>
                 <span class="highlight">Strategic implementation with transformative community impact.</span>
             </p>
         </div>
-        <div class="stat-box fade-in" style="margin-top: 40px;">
-            <p style="font-size: 1.4em;">Illinois Future Fund Initiative</p>
-            <p style="margin-top: 20px;">Strategic Implementation Timeline: Summer 2025</p>
+        <div class="stat-box fade-in-scale" style="margin-top: 3rem; max-width: 700px;">
+            <p style="font-size: 1.375rem; color: var(--text-primary); margin: 0;">Illinois Future Fund Initiative</p>
+            <p style="margin-top: 1.5rem; color: var(--accent-blue); margin-bottom: 0;">Strategic Implementation Timeline: Summer 2025</p>
         </div>
-        <div class="slide-number">12 / 12</div>
     </div>
 
     <!-- Navigation Controls -->
     <div class="controls">
-        <button onclick="previousSlide()">← Previous</button>
-        <button onclick="nextSlide()">Next →</button>
+        <button class="nav-button" onclick="previousSlide()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Previous
+        </button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 8.33%;"></div>
+        </div>
+        <button class="nav-button" onclick="nextSlide()">
+            Next
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
     </div>
 
     <script>
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
+        const progressFill = document.getElementById('progressFill');
+        const currentSlideNum = document.getElementById('currentSlideNum');
+        const totalSlidesSpan = document.getElementById('totalSlides');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // Initialize
+        totalSlidesSpan.textContent = totalSlides;
+
+        // Hide loading screen after page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loadingOverlay.classList.add('hidden');
+            }, 500);
+        });
 
         function showSlide(n) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            currentSlide = (n + totalSlides) % totalSlides;
-            slides[currentSlide].classList.add('active');
-            
-            // Trigger animations
-            const elements = slides[currentSlide].querySelectorAll('.fade-in');
-            elements.forEach((el, index) => {
-                el.style.animation = 'none';
-                setTimeout(() => {
-                    el.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s both`;
-                }, 10);
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+                slide.style.opacity = '0';
             });
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            
+            // Update progress
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressFill.style.width = `${progress}%`;
+            currentSlideNum.textContent = currentSlide + 1;
+            
+            // Show new slide with fade effect
+            setTimeout(() => {
+                slides[currentSlide].classList.add('active');
+                slides[currentSlide].style.opacity = '1';
+                slides[currentSlide].style.transition = 'opacity 0.5s ease';
+                
+                // Trigger animations
+                const elements = slides[currentSlide].querySelectorAll('.fade-in, .fade-in-scale');
+                elements.forEach((el, index) => {
+                    el.style.animation = 'none';
+                    setTimeout(() => {
+                        if (el.classList.contains('fade-in-scale')) {
+                            el.style.animation = `fadeInScale 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s both`;
+                        } else {
+                            el.style.animation = `fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s both`;
+                        }
+                    }, 10);
+                });
+            }, 50);
         }
 
         function nextSlide() {
@@ -650,6 +1018,8 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') previousSlide();
+            if (e.key === 'Home') showSlide(0);
+            if (e.key === 'End') showSlide(totalSlides - 1);
         });
 
         // Touch/swipe support for mobile
@@ -669,6 +1039,9 @@
             if (touchEndX < touchStartX - 50) nextSlide();
             if (touchEndX > touchStartX + 50) previousSlide();
         }
+
+        // Initialize first slide
+        showSlide(0);
     </script>
 </body>
 </html>
