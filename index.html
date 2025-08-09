@@ -726,6 +726,101 @@ table {
     0%, 100% { transform: translateX(-50%) translateY(0); }
     50% { transform: translateX(-50%) translateY(-10px); }
 }
+
+/* 10. Constrain content width for better readability */
+.slide > *:not(.controls):not(.keyboard-hint):not(.loading-overlay) {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+/* 11. Sticky table headers for long tables */
+.revenue-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* 12. Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* 13. Print styles (one slide per page) */
+@media print {
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+    .slide {
+        background: #ffffff !important;
+        color: #000000 !important;
+        display: block !important;
+        page-break-after: always;
+        min-height: auto;
+        height: auto;
+        padding: 40px !important;
+        box-shadow: none !important;
+    }
+    .controls, .loading-overlay, .keyboard-hint, .toc-overlay {
+        display: none !important;
+    }
+    .revenue-table, .content-box, .pillar {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+/* 14. Slide overview (TOC) overlay */
+.toc-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 1100;
+    padding: 40px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+.toc-overlay.open { display: flex; }
+.toc {
+    width: 100%;
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+}
+.toc-item {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    color: var(--text-primary);
+}
+.toc-item:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-gold);
+}
+.toc-item .number {
+    font-weight: 700;
+    color: var(--accent-gold);
+    margin-right: 8px;
+}
+.toc-item h4 {
+    display: inline;
+    font-size: 1rem;
+    font-weight: 600;
+}
     </style>
 </head>
 <body>
@@ -733,8 +828,6 @@ table {
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loader"></div>
     </div>
-    </div>
-
     <!-- Slide 1: Title -->
     <div class="slide title-slide active">
         <h1 class="fade-in-scale">Illinois Future Fund</h1>
@@ -1039,11 +1132,25 @@ table {
         </div>
     </div>
 
+    <div class="keyboard-hint">Use ←/→ or swipe. Press T for overview.</div>
+
+    <div class="toc-overlay" id="tocOverlay" aria-hidden="true">
+        <div class="toc" id="toc"></div>
+    </div>
+
     <!-- Navigation Controls -->
     <div class="controls">
         <button class="nav-button" onclick="previousSlide()" aria-label="Previous Slide">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        <button class="nav-button" onclick="toggleToc()" aria-label="Open overview">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
             </svg>
         </button>
         <div class="progress-bar">
@@ -1067,6 +1174,8 @@ table {
         const currentSlideNum = document.getElementById('currentSlideNum');
         const totalSlidesSpan = document.getElementById('totalSlides');
         const loadingOverlay = document.getElementById('loadingOverlay');
+        const tocOverlay = document.getElementById('tocOverlay');
+        const tocContainer = document.getElementById('toc');
 
         // Initialize
         totalSlidesSpan.textContent = totalSlides;
@@ -1078,27 +1187,58 @@ table {
             }, 500);
         });
 
+        function getInitialSlideFromHash() {
+            const hash = (location.hash || '').replace('#', '').toLowerCase();
+            if (/^\d+$/.test(hash)) {
+                const n = parseInt(hash, 10);
+                if (n >= 1 && n <= totalSlides) return n - 1;
+            }
+            if (/^slide-\d+$/.test(hash)) {
+                const n = parseInt(hash.split('-')[1], 10);
+                if (n >= 1 && n <= totalSlides) return n - 1;
+            }
+            return 0;
+        }
+
+        function updateScrollIndicator(slideEl) {
+            if (!slideEl) return;
+            // Allow layout to settle before measuring
+            requestAnimationFrame(() => {
+                if (slideEl.scrollHeight > slideEl.clientHeight + 10) {
+                    slideEl.classList.add('has-scroll');
+                } else {
+                    slideEl.classList.remove('has-scroll');
+                }
+            });
+        }
+
         function showSlide(n) {
             slides.forEach(slide => {
                 slide.classList.remove('active');
                 slide.style.opacity = '0';
             });
-            
+
             currentSlide = (n + totalSlides) % totalSlides;
-            
-            // Update progress
+
+            // Update progress and URL hash
             const progress = ((currentSlide + 1) / totalSlides) * 100;
             progressFill.style.width = `${progress}%`;
             currentSlideNum.textContent = currentSlide + 1;
-            
+            try { location.hash = `${currentSlide + 1}`; } catch (_) {}
+
             // Show new slide with fade effect
             setTimeout(() => {
-                slides[currentSlide].classList.add('active');
-                slides[currentSlide].style.opacity = '1';
-                slides[currentSlide].style.transition = 'opacity 0.5s ease';
-                
+                const activeSlide = slides[currentSlide];
+                activeSlide.classList.add('active');
+                activeSlide.style.opacity = '1';
+                activeSlide.style.transition = 'opacity 0.5s ease';
+
+                // Accessibility: focus active slide
+                activeSlide.setAttribute('tabindex', '-1');
+                activeSlide.focus({ preventScroll: true });
+
                 // Trigger animations
-                const elements = slides[currentSlide].querySelectorAll('.fade-in, .fade-in-scale');
+                const elements = activeSlide.querySelectorAll('.fade-in, .fade-in-scale');
                 elements.forEach((el, index) => {
                     el.style.animation = 'none';
                     setTimeout(() => {
@@ -1109,6 +1249,8 @@ table {
                         }
                     }, 10);
                 });
+
+                updateScrollIndicator(activeSlide);
             }, 50);
         }
 
@@ -1120,12 +1262,46 @@ table {
             showSlide(currentSlide - 1);
         }
 
+        function buildToc() {
+            if (!tocContainer) return;
+            tocContainer.innerHTML = '';
+            slides.forEach((slide, idx) => {
+                const titleEl = slide.querySelector('h1, h2');
+                const title = titleEl ? titleEl.textContent.trim() : `Slide ${idx + 1}`;
+                const item = document.createElement('button');
+                item.type = 'button';
+                item.className = 'toc-item';
+                item.innerHTML = `<span class="number">${idx + 1}.</span> <h4>${title}</h4>`;
+                item.addEventListener('click', () => {
+                    toggleToc(false);
+                    showSlide(idx);
+                });
+                tocContainer.appendChild(item);
+            });
+        }
+
+        function toggleToc(force) {
+            if (!tocOverlay) return;
+            const shouldOpen = typeof force === 'boolean' ? force : !tocOverlay.classList.contains('open');
+            tocOverlay.classList.toggle('open', shouldOpen);
+            tocOverlay.setAttribute('aria-hidden', String(!shouldOpen));
+        }
+
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
+            // Ignore when focused inside inputs (none exist currently) but future-proof
+            const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+            if (tag === 'input' || tag === 'textarea') return;
+
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') previousSlide();
             if (e.key === 'Home') showSlide(0);
             if (e.key === 'End') showSlide(totalSlides - 1);
+            if (e.key === 't' || e.key === 'T') {
+                e.preventDefault();
+                toggleToc();
+            }
+            if (e.key === 'Escape') toggleToc(false);
         });
 
         // Touch/swipe support for mobile
@@ -1151,6 +1327,9 @@ table {
         const controls = document.querySelector('.controls');
 
         function showControls() {
+            if (!controls) return;
+            // Do not auto-hide when overview is open
+            if (tocOverlay && tocOverlay.classList.contains('open')) return;
             controls.classList.remove('hidden');
             clearTimeout(hideTimeout);
             hideTimeout = setTimeout(() => {
@@ -1162,9 +1341,26 @@ table {
         document.addEventListener('touchstart', showControls);
         document.addEventListener('keydown', showControls);
 
-        // Initialize first slide and controls
-        showSlide(0);
+        // Close overview when clicking backdrop
+        if (tocOverlay) {
+            tocOverlay.addEventListener('click', (e) => {
+                if (e.target === tocOverlay) toggleToc(false);
+            });
+        }
+
+        // Initialize first slide, TOC, and controls
+        const initialIndex = getInitialSlideFromHash();
+        buildToc();
+        showSlide(initialIndex);
         showControls();
+
+        // Update scroll indicator on resize for current slide
+        window.addEventListener('resize', () => updateScrollIndicator(slides[currentSlide]));
+
+        // Expose toggleToc globally for button
+        window.toggleToc = toggleToc;
+        window.nextSlide = nextSlide;
+        window.previousSlide = previousSlide;
     </script>
 </body>
 </html>
